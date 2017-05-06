@@ -22,7 +22,7 @@ void initGL() {
 void display() {
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
    
-   glFrustum(0.0, 350.0, 0.0, 350.0, 100.0, 400.0);         
+   glFrustum(-250.0, 350.0, -50.0, 450.0, 240.0, 600.0);         
    glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix
 	
    // Render a color-cube consisting of 6 quads with different colors
