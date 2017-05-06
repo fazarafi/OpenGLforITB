@@ -74,7 +74,9 @@ public :
 						input_file >> a;
 						p.setY(a);
 						point_shape.push_back(p);
+						//cout << p.getX() << "-" << p.getY() << endl;
 					}
+					
 				}
 				points.push_back(point_shape);
 				point_shape.clear();
