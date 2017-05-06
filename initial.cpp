@@ -33,53 +33,47 @@ void display() {
       // Top face (y = 10.0f)
       // Define vertices in counter-clockwise (CCW) order with normal pointing out
       glColor3f(0.0f, 10.0f, 0.0f);     // Green
-      glVertex3f(10.0f, 10.0f, -10.0f);
-      glVertex3f(-10.0f, 10.0f, -10.0f);
-      glVertex3f(-10.0f, 10.0f,  10.0f);
-      glVertex3f( 10.0f, 10.0f,  10.0f);
+      glVertex3f(175.0f, 10.0f, -175.0f);
+      glVertex3f(-175.0f, 10.0f, -175.0f);
+      glVertex3f(-175.0f, 10.0f,  175.0f);
+      glVertex3f( 175.0f, 10.0f,  175.0f);
  
       // Bottom face (y = -10.0f)
       glColor3f(10.0f, 0.5f, 0.0f);     // Orange
-      glVertex3f( 10.0f, -10.0f,  10.0f);
-      glVertex3f(-10.0f, -10.0f,  10.0f);
-      glVertex3f(-10.0f, -10.0f, -10.0f);
-      glVertex3f( 10.0f, -10.0f, -10.0f);
+      glVertex3f( 175.0f, -10.0f,  175.0f);
+      glVertex3f(-175.0f, -10.0f,  175.0f);
+      glVertex3f(-175.0f, -10.0f, -175.0f);
+      glVertex3f( 175.0f, -10.0f, -175.0f);
  
       // Front face  (z = 10.0f)
       glColor3f(10.0f, 0.0f, 0.0f);     // Red
-      glVertex3f( 10.0f,  10.0f, 10.0f);
-      glVertex3f(-10.0f,  10.0f, 10.0f);
-      glVertex3f(-10.0f, -10.0f, 10.0f);
-      glVertex3f( 10.0f, -10.0f, 10.0f);
+      glVertex3f( 175.0f,  10.0f, 175.0f);
+      glVertex3f(-175.0f,  10.0f, 175.0f);
+      glVertex3f(-175.0f, -10.0f, 175.0f);
+      glVertex3f( 175.0f, -10.0f, 175.0f);
  
       // Back face (z = -10.0f)
-      glColor3f(10.0f, 10.0f, 0.0f);     // Yellow
-      glVertex3f( 10.0f, -10.0f, -10.0f);
-      glVertex3f(-10.0f, -10.0f, -10.0f);
-      glVertex3f(-10.0f,  10.0f, -10.0f);
-      glVertex3f( 10.0f,  10.0f, -10.0f);
+      glColor3f(175.0f, 10.0f, 0.0f);     // Yellow
+      glVertex3f( 175.0f, -10.0f, -175.0f);
+      glVertex3f(-175.0f, -10.0f, -175.0f);
+      glVertex3f(-175.0f,  10.0f, -175.0f);
+      glVertex3f( 175.0f,  10.0f, -175.0f);
  
       // Left face (x = -10.0f)
       glColor3f(0.0f, 0.0f, 10.0f);     // Blue
-      glVertex3f(-10.0f,  10.0f,  10.0f);
-      glVertex3f(-10.0f,  10.0f, -10.0f);
-      glVertex3f(-10.0f, -10.0f, -10.0f);
-      glVertex3f(-10.0f, -10.0f,  10.0f);
+      glVertex3f(-175.0f,  10.0f,  175.0f);
+      glVertex3f(-175.0f,  10.0f, -175.0f);
+      glVertex3f(-175.0f, -10.0f, -175.0f);
+      glVertex3f(-175.0f, -10.0f,  175.0f);
  
       // Right face (x = 10.0f)
-      glColor3f(10.0f, 0.0f, 10.0f);     // Magenta
-      glVertex3f(10.0f,  10.0f, -10.0f);
-      glVertex3f(10.0f,  10.0f,  10.0f);
-      glVertex3f(10.0f, -10.0f,  10.0f);
-      glVertex3f(10.0f, -10.0f, -10.0f);
+      glColor3f(175.0f, 0.0f, 10.0f);     // Magenta
+      glVertex3f(175.0f,  10.0f, -175.0f);
+      glVertex3f(175.0f,  10.0f,  175.0f);
+      glVertex3f(175.0f, -10.0f,  175.0f);
+      glVertex3f(175.0f, -10.0f, -175.0f);
    glEnd();  // End of drawing color-cube
- 
-   // Render a pyramid consists of 4 triangles
-   glLoadIdentity();                  // Reset the model-view matrix
-   glTranslatef(-1.5f, 0.0f, -6.0f);  // Move left and into the screen
- 
-   
- 
+    
    glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
 }
  
