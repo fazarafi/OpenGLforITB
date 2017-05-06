@@ -83,38 +83,37 @@ void display() {
       //Define vertices in counter-clockwise (CCW) order with normal pointing out
       glColor3f(0.0f, 10.0f, 0.0f);     // Green
       glVertex3f(-144.0f, 20.0f, -19.0f);
-      glVertex3f(-49.0f, 20.0f, -19.0f);
-      glVertex3f(-49.0f, 20.0f, -4.0f);
+      glVertex3f(-118.0f, 20.0f, -19.0f);
+      glVertex3f(-118.0f, 20.0f, -4.0f);
       glVertex3f(-144.0f, 20.0f, -4.0f);
-      
  
       // Bottom face (y = -10.0f)
       glColor3f(10.0f, 0.5f, 0.0f);     // Orange
       glVertex3f(-144.0f, 10.0f, -19.0f);
-      glVertex3f(-49.0f, 10.0f, -19.0f);
-      glVertex3f(-49.0f, 10.0f, -4.0f);
+      glVertex3f(-118.0f, 10.0f, -19.0f);
+      glVertex3f(-118.0f, 10.0f, -4.0f);
       glVertex3f(-144.0f, 10.0f, -4.0f);
  
       //Front face  (z = 10.0f)
       glColor3f(10.0f, 0.0f, 0.0f);     // Red
 	  glVertex3f(-144.0f, 20.0f, -4.0f);
-      glVertex3f(-49.0f, 20.0f, -4.0f);
-      glVertex3f(-49.0f, 10.0f,  -4.0f);
+      glVertex3f(-118.0f, 20.0f, -4.0f);
+      glVertex3f(-118.0f, 10.0f,  -4.0f);
       glVertex3f(-144.0f, 10.0f,  -4.0f);
  
       // Back face (z = -10.0f)
       glColor3f(175.0f, 10.0f, 0.0f);     // Yellow
 	  glVertex3f(-144.0f, 10.0f, -19.0f);
-      glVertex3f(-49.0f, 10.0f, -19.0f);
-      glVertex3f(-49.0f, 20.0f,  -19.0f);
+      glVertex3f(-118.0f, 10.0f, -19.0f);
+      glVertex3f(-118.0f, 20.0f,  -19.0f);
       glVertex3f(-144.0f, 20.0f,  -19.0f);
  
       // Left face (x = -10.0f)
       glColor3f(0.0f, 0.0f, 10.0f);     // Blue
-	  glVertex3f(-49.0f, 20.0f, -19.0f);
-      glVertex3f(-49.0f, 20.0f, -4.0f);
-      glVertex3f(-49.0f, 10.0f,  -4.0f);
-      glVertex3f(-49.0f, 10.0f,  -19.0f);
+	  glVertex3f(-118.0f, 20.0f, -19.0f);
+      glVertex3f(-118.0f, 20.0f, -4.0f);
+      glVertex3f(-118.0f, 10.0f,  -4.0f);
+      glVertex3f(-118.0f, 10.0f,  -19.0f);
  
       // Right face (x = 10.0f)
       glColor3f(175.0f, 0.0f, 10.0f);     // Magenta
