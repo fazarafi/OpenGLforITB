@@ -65,15 +65,15 @@ void drawBuilding(vector<Point> points) {
    int x1, z1, x2, z2, i = 0;
    
    // Loading images into textures
-   Image* image = loadBMP("aaa.bmp3");
+   Image* image = loadBMP("1.bmp3");
    _textureId[0] = loadTexture(image);
    delete image;
 
-   Image* image1 = loadBMP("aaa.bmp3");
+   Image* image1 = loadBMP("2.bmp3");
    _textureId[1] = loadTexture(image1);
    delete image1;
 
-   Image* image2 = loadBMP("aaa.bmp3");
+   Image* image2 = loadBMP("1.bmp3");
    _textureId[2] = loadTexture(image2);
    delete image2;
 
