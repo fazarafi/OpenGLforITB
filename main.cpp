@@ -37,54 +37,6 @@ GLuint loadTexture(Image* image) {
    return textureId; //Returns the id of the texture
 }
 
-// GLuint LoadTexture( const char *filename )
-// {
-
-//    GLuint texture;
-
-//    int width, height;
-
-//    unsigned char * data;
-
-//    FILE * file;
-
-//    file = fopen( filename, "rb" );
-   
-//    if ( file == NULL ) return 0;
-//    width = 128;
-//    height = 128;
-//    data = (unsigned char *)malloc( width * height * 3 );
-//    //int size = fseek(file,);
-//    fread( data, width * height * 3, 1, file );
-//    fclose( file );
-
-//    for(int i = 0; i < width * height ; ++i)
-//    {
-//       int index = i*3;
-//       unsigned char B,R;
-//       B = data[index];
-//       R = data[index+2];
-
-//       data[index] = R;
-//       data[index+2] = B;
-
-//    }
-
-//    glGenTextures( 1, &texture );
-//    glBindTexture( GL_TEXTURE_2D, texture );
-//    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,GL_MODULATE );
-//    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST );
-
-
-//    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_LINEAR );
-//    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_REPEAT );
-//    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_REPEAT );
-//    gluBuild2DMipmaps( GL_TEXTURE_2D, 3, width, height,GL_RGB, GL_UNSIGNED_BYTE, data );
-//    free( data );
-
-//    return texture;
-// }
- 
 
 
 GLuint _textureId[5]; //The id of the texture
@@ -113,15 +65,15 @@ void drawBuilding(vector<Point> points) {
    int x1, z1, x2, z2, i = 0;
    
    // Loading images into textures
-   Image* image = loadBMP("1.bmp3");
+   Image* image = loadBMP("aaa.bmp3");
    _textureId[0] = loadTexture(image);
    delete image;
 
-   Image* image1 = loadBMP("2.bmp3");
+   Image* image1 = loadBMP("aaa.bmp3");
    _textureId[1] = loadTexture(image1);
    delete image1;
 
-   Image* image2 = loadBMP("1.bmp3");
+   Image* image2 = loadBMP("aaa.bmp3");
    _textureId[2] = loadTexture(image2);
    delete image2;
 
@@ -157,26 +109,7 @@ void drawBuilding(vector<Point> points) {
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
        glColor3f(1.0f, 1.0f, 1.0f);
        glBegin(GL_QUADS); 
-         // if ((i + 4)/ 4 == 0) {
-         //    glColor3f(10.0f, 0.0f, 0.0f);     // Red
-         // }
-         // else if ((i + 4)/ 5 == 0) {
-         //    glColor3f(175.0f, 10.0f, 0.0f);     // Yellow
-         // }
-         // else if ((i + 4)/ 5 == 0) {
-         //    glColor3f(0.0f, 0.0f, 10.0f);     // Blue
-         // }
-         // else { // (div (i + 1, ) == 0
-         //    glColor3f(175.0f, 0.0f, 10.0f);     // Magenta
-         // }
-      // glTexCoord2f(0.0, 0.0); glVertex3f(-50.0, -50.0, -10.0);
-
-      // glTexCoord2f(0.0, 1.0); glVertex3f(-50.0, 50.0, -10.0);
-
-      // glTexCoord2f(1.0, 1.0); glVertex3f(50.0, 50.0, -10.0);
-
-      // glTexCoord2f(1.0, 0.0); glVertex3f(50.0, -50.0, -10.0);
-
+ 
       
       glTexCoord2f(1.0, 1.0); glVertex3f((float)x1-175, 20.0f, (float)(z1*(-175)/360));
       glTexCoord2f(0.0, 1.0); glVertex3f((float)x2-175, 20.0f, (float)(z2*(-175)/360));
@@ -237,7 +170,7 @@ void display() {
 	computePos(d);
 	computeGeser(p);
 	glFrustum(-250.0/zoom, 250.0/zoom, -250.0/zoom, 250.0/zoom, 10.0, 200.0);
-	gluLookAt(0.0+geser, 100.0, 0.0, 0.0-geser, 0.0, -200.0, 0.0, 1.0, 0.0);       
+	gluLookAt(0.0+geser, 100.0, -200.0, 0.0-geser, 0.0, 0.0, 0.0, 1.0, 0.0);       
    	
 	glMatrixMode(GL_MODELVIEW); // To operate on model-view matrix
 	
