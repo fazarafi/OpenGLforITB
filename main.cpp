@@ -158,9 +158,11 @@ void drawBuilding(vector<Point> points) {
    	glTexCoord2f(0.0, 1.0); glVertex3f((float)x2-175, 20.0f, (float)(z2*(-175)/360));
    	glTexCoord2f(1.0, 1.0); glVertex3f((float)x2-175, 10.0f,  (float)(z2*(-175)/360));
    	glTexCoord2f(1.0, 0.0); glVertex3f((float)x1-175, 10.0f,  (float)(z1*(-175)/360));
+
    }
    glEnd();
-   
+   glDisable(GL_TEXTURE_2D);
+
    glBegin(GL_POLYGON);
    glColor3f(10.0f, 0.5f, 0.0f);     // Orange 
    for (i = 0; i < points.size(); i++) {
