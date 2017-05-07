@@ -65,7 +65,7 @@ void drawBuilding(vector<Point> points) {
    int x1, z1, x2, z2, i = 0;
    
    // Loading images into textures
-   Image* image = loadBMP("aaa.bmp3");
+   /*Image* image = loadBMP("aaa.bmp3");
    _textureId[0] = loadTexture(image);
    delete image;
 
@@ -83,7 +83,7 @@ void drawBuilding(vector<Point> points) {
 
    Image* image4 = loadBMP("aaa.bmp3");
    _textureId[4] = loadTexture(image4);
-   delete image4;
+   delete image4;*/
    
 
 
@@ -317,6 +317,27 @@ void releaseKey(int key, int, int) {
     }
 } 
 
+void mouseButton(int button, int state, int x, int y) {
+
+	// only start motion if the left button is pressed
+	if (button == GLUT_LEFT_BUTTON) {
+
+		// when the button is released
+		if (state == GLUT_UP) {
+			p = 0;
+		}
+	}
+}
+
+void mouseMove(int x, int) {
+	cout << "x: " << x << endl;
+	if (x > 640/2) {
+		p = 0.1;
+	} else {
+		p = -0.1;
+	}
+}
+
 /* Main function: GLUT runs as a console application starting at main() */
 int main(int argc, char** argv) {
    	glutInit(&argc, argv);            // Initialize GLUT
@@ -333,6 +354,9 @@ int main(int argc, char** argv) {
 	glutKeyboardFunc(processNormalKeys);
    	glutSpecialFunc(pressKey);
    	glutSpecialUpFunc(releaseKey);
+    
+    glutMouseFunc(mouseButton);
+    glutMotionFunc(mouseMove);
     
    	initGL();                       // Our own OpenGL initialization
    	glutMainLoop();                 // Enter the infinite event-processing loop
