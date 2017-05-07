@@ -11,56 +11,79 @@
 /* Global variables */
 char title[] = "3D Shapes";
 std::vector< std::vector<Point> > listBuilding;
+std::vector< std::vector<Point> > listRoad;
 Parser parse;
+Parser parseRoad;
 
-/* Load Texture from file */
-GLuint LoadTexture( const char *filename )
-{
+float zoom = 1.0;
+float d = 0, p = 0;
+float geser = 0;
 
-   GLuint texture;
-
-   int width, height;
-
-   unsigned char * data;
-
-   FILE * file;
-
-   file = fopen( filename, "rb" );
-   
-   if ( file == NULL ) return 0;
-   width = 128;
-   height = 128;
-   data = (unsigned char *)malloc( width * height * 3 );
-   //int size = fseek(file,);
-   fread( data, width * height * 3, 1, file );
-   fclose( file );
-
-   for(int i = 0; i < width * height ; ++i)
-   {
-      int index = i*3;
-      unsigned char B,R;
-      B = data[index];
-      R = data[index+2];
-
-      data[index] = R;
-      data[index+2] = B;
-
-   }
-
-   glGenTextures( 1, &texture );
-   glBindTexture( GL_TEXTURE_2D, texture );
-   glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,GL_MODULATE );
-   glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST );
-
-
-   glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_LINEAR );
-   glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_REPEAT );
-   glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_REPEAT );
-   gluBuild2DMipmaps( GL_TEXTURE_2D, 3, width, height,GL_RGB, GL_UNSIGNED_BYTE, data );
-   free( data );
-
-   return texture;
+/* Load Texture from image */
+GLuint loadTexture(Image* image) {
+   GLuint textureId;
+   glGenTextures(1, &textureId); //Make room for our texture
+   glBindTexture(GL_TEXTURE_2D, textureId); //Tell OpenGL which texture to edit
+   //Map the image to the texture
+   glTexImage2D(GL_TEXTURE_2D,                //Always GL_TEXTURE_2D
+             0,                            //0 for now
+             GL_RGB,                       //Format OpenGL uses for image
+             image->width, image->height,  //Width and height
+             0,                            //The border of the image
+             GL_RGB, //GL_RGB, because pixels are stored in RGB format
+             GL_UNSIGNED_BYTE, //GL_UNSIGNED_BYTE, because pixels are stored
+                               //as unsigned numbers
+             image->pixels);               //The actual pixel data
+   return textureId; //Returns the id of the texture
 }
+
+// GLuint LoadTexture( const char *filename )
+// {
+
+//    GLuint texture;
+
+//    int width, height;
+
+//    unsigned char * data;
+
+//    FILE * file;
+
+//    file = fopen( filename, "rb" );
+   
+//    if ( file == NULL ) return 0;
+//    width = 128;
+//    height = 128;
+//    data = (unsigned char *)malloc( width * height * 3 );
+//    //int size = fseek(file,);
+//    fread( data, width * height * 3, 1, file );
+//    fclose( file );
+
+//    for(int i = 0; i < width * height ; ++i)
+//    {
+//       int index = i*3;
+//       unsigned char B,R;
+//       B = data[index];
+//       R = data[index+2];
+
+//       data[index] = R;
+//       data[index+2] = B;
+
+//    }
+
+//    glGenTextures( 1, &texture );
+//    glBindTexture( GL_TEXTURE_2D, texture );
+//    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,GL_MODULATE );
+//    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST );
+
+
+//    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_LINEAR );
+//    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_REPEAT );
+//    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_REPEAT );
+//    gluBuild2DMipmaps( GL_TEXTURE_2D, 3, width, height,GL_RGB, GL_UNSIGNED_BYTE, data );
+//    free( data );
+
+//    return texture;
+// }
  
 
 
@@ -174,9 +197,17 @@ void drawBuilding(vector<Point> points) {
    
 }
 
-float zoom = 1.0;
-float d = 0, p = 0;
-float geser = 0;
+void drawRoad(vector<Point> points) {
+	cout << "drawing Road"<< endl;
+	glBegin(GL_POLYGON);
+	glColor3f(1.0f, 1.0f, 1.0f);     // Orange 
+	for (int i = 0; i < points.size(); i++) {
+		cout << points[i].getX() << " - " << points[i].getY() << endl;
+		glVertex3f((float)points[i].getX()-175, 10.0f, (float)(points[i].getY()*(-175)/360));
+	}
+	glEnd();
+}
+ 
 
 void computePos(float d) {
 	zoom += d;
@@ -194,6 +225,10 @@ void display() {
 	
    	parse.parseAdi("bangunan.txt");
    	listBuilding = parse.getPoints();
+   	
+   	parseRoad.parseAdi("jalan2.txt");
+    listRoad = parseRoad.getPoints();
+    
 	cout << listBuilding.size() << endl;
    	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
 
@@ -299,6 +334,13 @@ glBegin(GL_QUADS);
    	for (int i = 0; i < listBuilding.size(); i++) {
     	drawBuilding(listBuilding[i]);
    	}
+   	
+   	/*
+   	for (int i = 0; i < listRoad.size(); i++) {
+    	drawRoad(listRoad[i]);
+   	}
+   	*/
+
    	glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
 }
  
