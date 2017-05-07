@@ -1,10 +1,10 @@
 /*
  * OGL01Shape3D.cpp: 3D Shapes
  */
-#include <windows.h>  // for MS Windows
+//#include <windows.h>  // for MS Windows
 #include <GL/glut.h>  // GLUT, include glu.h and gl.h
 #include "parser.h"
- 
+#include <iostream>
 /* Global variables */
 char title[] = "3D Shapes";
 std::vector< std::vector<Point> > listBuilding;
@@ -101,18 +101,17 @@ void drawBuilding(vector<Point> points) {
       	else { // (div (i + 1, ) == 0
       		glColor3f(175.0f, 0.0f, 10.0f);     // Magenta
       	}
-      
-      	glVertex3f((float)x1-175, 20.0f, (float)z1-175);
-      	glVertex3f((float)x2-175, 20.0f, (float)z2-175);
-      	glVertex3f((float)x2-175, 10.0f,  (float)z2-175);
-      	glVertex3f((float)x1-175, 10.0f,  (float)z1-175);
+		glVertex3f((float)x1-175, 20.0f, (float)(z1*(-175)/360));
+      	glVertex3f((float)x2-175, 20.0f, (float)(z2*(-175)/360));
+      	glVertex3f((float)x2-175, 10.0f,  (float)(z2*(-175)/360));
+      	glVertex3f((float)x1-175, 10.0f,  (float)(z1*(-175)/360));
    }
    glEnd();
    
    glBegin(GL_POLYGON);
    glColor3f(10.0f, 0.5f, 0.0f);     // Orange 
    for (i = 0; i < points.size(); i++) {
-   	  glVertex3f((float)points[i].getX()-175, 20.0f, (float)points[i].getY()-175);
+   	  glVertex3f((float)points[i].getX()-175, 20.0f, (float)(points[i].getY()*(-175)/360));
    }
    glEnd();
    
@@ -124,7 +123,7 @@ void display() {
 	
    	parse.parseAdi("bangunan.txt");
    	listBuilding = parse.getPoints();
-	
+	cout << listBuilding.size() << endl;
    	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
    
    	glFrustum(-250.0, 350.0, -50.0, 450.0, 240.0, 600.0);         
