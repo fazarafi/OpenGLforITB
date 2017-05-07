@@ -28,18 +28,6 @@ GLuint LoadTexture( const char *filename )
    file = fopen( filename, "rb" );
    
    if ( file == NULL ) return 0;
-   BITMAPFILEHEADER bmfHeader;
- 
-   // Read file header
-   
-   // File type should be 'BM'
-   
-   BITMAPINFOHEADER bmiHeader;
-   
- 
-   int bmWidth = bmiHeader.biWidth;
-   int bmHeight = bmiHeader.biHeight;
-   cout<<bmWidth<<" "<<bmHeight<<endl;
    width = 128;
    height = 128;
    data = (unsigned char *)malloc( width * height * 3 );
@@ -182,7 +170,7 @@ void display() {
     // Reset the model-view matrix
 
 
-      // GLuint ImageTex = LoadTexture("vtr.bmp");
+      GLuint ImageTex = LoadTexture("vtr.bmp");
       // glEnable(GL_TEXTURE_2D);
       // glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,GL_REPLACE);
       // glBindTexture(GL_TEXTURE_2D, ImageTex);
@@ -241,31 +229,33 @@ glBegin(GL_QUADS);
       	glVertex3f(175.0f, -10.0f,  175.0f);
       	glVertex3f(175.0f, -10.0f, -175.0f);
    	glEnd();  // End of drawing color-cube
-      // Render a color-cube consisting of 6 quads with different colors
-      
 
-      // glEnable(GL_TEXTURE_2D);
-      // glBindTexture(GL_TEXTURE_2D, _textureId);
-      
-      // //Bottom
-      // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-      // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-      // //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-      // //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-      // glColor3f(1.0f, 0.2f, 0.2f);
-      // glBegin(GL_QUADS);
-      
-      //    glNormal3f(0.0, 1.0f, 0.0f);
-      //    glTexCoord2f(0.0f, 0.0f);
-      //    glVertex3f(-2.5f, -2.5f, 2.5f);
-      //    glTexCoord2f(1.0f, 0.0f);
-      //    glVertex3f(2.5f, -2.5f, 2.5f);
-      //    glTexCoord2f(1.0f, 1.0f);
-      //    glVertex3f(2.5f, -2.5f, -2.5f);
-      //    glTexCoord2f(0.0f, 1.0f);
-      //    glVertex3f(-2.5f, -2.5f, -2.5f);
          
-      // glEnd();
+      Image* image = loadBMP("vtr.bmp");
+      _textureId = loadTexture(image);
+      delete image;
+      cout<<_textureId<<" AAAA"<<endl;
+      glEnable(GL_TEXTURE_2D);
+      glBindTexture(GL_TEXTURE_2D, _textureId);
+      
+      //Bottom
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      glColor3f(1.0f, 1.0f, 1.0f);
+      glBegin(GL_QUADS);
+         
+         // glNormal3f(0.0, 1.0f, 0.0f);
+         glTexCoord2f(0.0, 0.0); glVertex3f(-50.0, -50.0, -10.0);
+
+      glTexCoord2f(0.0, 1.0); glVertex3f(-50.0, 50.0, -10.0);
+
+      glTexCoord2f(1.0, 1.0); glVertex3f(50.0, 50.0, -10.0);
+
+      glTexCoord2f(1.0, 0.0); glVertex3f(50.0, -50.0, -10.0);
+         
+      glEnd();
+
+   
       
       glDisable(GL_TEXTURE_2D);
    	

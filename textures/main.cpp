@@ -72,6 +72,7 @@ void initRendering() {
 	
 	Image* image = loadBMP("vtr.bmp");
 	_textureId = loadTexture(image);
+	cout<<_textureId;
 	delete image;
 }
 
@@ -106,10 +107,10 @@ void drawScene() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glColor3f(1.0f, 0.2f, 0.2f);
+	glColor3f(1.0f, 1.0f, 1.0f);
 	glBegin(GL_QUADS);
 	
-	glNormal3f(0.0, 1.0f, 0.0f);
+	// glNormal3f(0.0, 1.0f, 0.0f);
 	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(-2.5f, -2.5f, 2.5f);
 	glTexCoord2f(1.0f, 0.0f);
