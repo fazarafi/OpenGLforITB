@@ -200,7 +200,7 @@ void display() {
 	computePos(d);
 	computeGeser(p);
 	glFrustum(-250.0/zoom, 250.0/zoom, -250.0/zoom, 250.0/zoom, 10.0, 200.0);
-	gluLookAt(0.0+geser, 100.0, 0.0, 0.0-geser, 0.0, -200.0, 0.0, 1.0, 0.0);       
+	gluLookAt(0.0+geser, 100.0, -200.0, 0.0-geser, 0.0, 0.0, 0.0, 1.0, 0.0);       
    	
 	glMatrixMode(GL_MODELVIEW); // To operate on model-view matrix
 	
