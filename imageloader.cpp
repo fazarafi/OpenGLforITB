@@ -24,6 +24,7 @@
 
 #include <assert.h>
 #include <fstream>
+#include <iostream>
 
 #include "imageloader.h"
 
@@ -151,6 +152,7 @@ Image* loadBMP(const char* filename) {
 			//V3
 			width = readInt(input);
 			height = readInt(input);
+			cout<<"40"<<endl;
 			input.ignore(2);
 			assert(readShort(input) == 24 || !"Image is not 24 bits per pixel");
 			assert(readShort(input) == 0 || !"Image is compressed");
@@ -159,6 +161,7 @@ Image* loadBMP(const char* filename) {
 			//OS/2 V1
 			width = readShort(input);
 			height = readShort(input);
+			cout<<"12"<<endl;
 			input.ignore(2);
 			assert(readShort(input) == 24 || !"Image is not 24 bits per pixel");
 			break;
