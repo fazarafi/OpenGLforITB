@@ -8,7 +8,9 @@
 /* Global variables */
 char title[] = "3D Shapes";
 std::vector< std::vector<Point> > listBuilding;
+std::vector< std::vector<Point> > listRoad;
 Parser parse;
+Parser parseRoad;
 
 /* Load Texture from file */
 GLuint LoadTexture( const char *filename )
@@ -123,6 +125,10 @@ void display() {
 	
    	parse.parseAdi("bangunan.txt");
    	listBuilding = parse.getPoints();
+   	
+   	parseRoad.parseAdi("jalan.txt");
+    listRoad = parseRoad.getPoints();
+    
 	cout << listBuilding.size() << endl;
    	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
    
@@ -185,6 +191,8 @@ void display() {
    	for (int i = 0; i < listBuilding.size(); i++) {
     	drawBuilding(listBuilding[i]);
    	}
+   	
+   	
    /*glBegin(GL_QUADS);                // Begin drawing the color cube with 6 quads
       // Top face (y = 10.0f)
       //Define vertices in counter-clockwise (CCW) order with normal pointing out
