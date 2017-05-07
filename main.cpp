@@ -97,11 +97,7 @@ void initGL() {
 	glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
 	glShadeModel(GL_SMOOTH);   // Enable smooth shading
 
-   // Load image
-   Image* image = loadBMP("vtr.bmp");
-   _textureId = loadTexture(image);
-   delete image;
-
+ 
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
 }
 
@@ -154,9 +150,10 @@ void drawBuilding(vector<Point> points) {
 
       // glTexCoord2f(1.0, 0.0); glVertex3f(50.0, -50.0, -10.0);
 
-		glTexCoord2f(0.0, 0.0); glVertex3f((float)x1-175, 20.0f, (float)(z1*(-175)/360));
+		
+      glTexCoord2f(1.0, 1.0); glVertex3f((float)x1-175, 20.0f, (float)(z1*(-175)/360));
    	glTexCoord2f(0.0, 1.0); glVertex3f((float)x2-175, 20.0f, (float)(z2*(-175)/360));
-   	glTexCoord2f(1.0, 1.0); glVertex3f((float)x2-175, 10.0f,  (float)(z2*(-175)/360));
+   	glTexCoord2f(0.0, 0.0); glVertex3f((float)x2-175, 10.0f,  (float)(z2*(-175)/360));
    	glTexCoord2f(1.0, 0.0); glVertex3f((float)x1-175, 10.0f,  (float)(z1*(-175)/360));
 
    }
