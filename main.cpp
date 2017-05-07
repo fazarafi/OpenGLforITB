@@ -204,7 +204,7 @@ void display() {
       	glVertex3f(-175.0f, 10.0f, -175.0f);
       	glVertex3f(-175.0f, 10.0f,  175.0f);
       	glVertex3f( 175.0f, 10.0f,  175.0f);
- 	       glDisable(GL_TEXTURE_2D);
+ 	       // glDisable(GL_TEXTURE_2D);
 glBegin(GL_QUADS);
       	// Bottom face (y = -10.0f)
       	glColor3f(10.0f, 0.5f, 0.0f);     // Orange
