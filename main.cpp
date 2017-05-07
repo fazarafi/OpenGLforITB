@@ -5,6 +5,9 @@
 #include <GL/glut.h>  // GLUT, include glu.h and gl.h
 #include "parser.h"
 #include <iostream>
+#include <windows.h>
+#include "imageloader.h"
+
 /* Global variables */
 char title[] = "3D Shapes";
 std::vector< std::vector<Point> > listBuilding;
@@ -23,11 +26,22 @@ GLuint LoadTexture( const char *filename )
    FILE * file;
 
    file = fopen( filename, "rb" );
-   cout<<filename<<endl;
+   
    if ( file == NULL ) return 0;
-   width = 1024;
-   height = 512;
-   cout<<"DISINI"<<endl;
+   BITMAPFILEHEADER bmfHeader;
+ 
+   // Read file header
+   
+   // File type should be 'BM'
+   
+   BITMAPINFOHEADER bmiHeader;
+   
+ 
+   int bmWidth = bmiHeader.biWidth;
+   int bmHeight = bmiHeader.biHeight;
+   cout<<bmWidth<<" "<<bmHeight<<endl;
+   width = 128;
+   height = 128;
    data = (unsigned char *)malloc( width * height * 3 );
    //int size = fseek(file,);
    fread( data, width * height * 3, 1, file );
@@ -45,7 +59,6 @@ GLuint LoadTexture( const char *filename )
 
    }
 
-
    glGenTextures( 1, &texture );
    glBindTexture( GL_TEXTURE_2D, texture );
    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,GL_MODULATE );
@@ -61,19 +74,54 @@ GLuint LoadTexture( const char *filename )
    return texture;
 }
  
+GLuint loadTexture(Image* image) {
+   GLuint textureId;
+   glGenTextures(1, &textureId); //Make room for our texture
+   glBindTexture(GL_TEXTURE_2D, textureId); //Tell OpenGL which texture to edit
+   //Map the image to the texture
+   glTexImage2D(GL_TEXTURE_2D,                //Always GL_TEXTURE_2D
+             0,                            //0 for now
+             GL_RGB,                       //Format OpenGL uses for image
+             image->width, image->height,  //Width and height
+             0,                            //The border of the image
+             GL_RGB, //GL_RGB, because pixels are stored in RGB format
+             GL_UNSIGNED_BYTE, //GL_UNSIGNED_BYTE, because pixels are stored
+                               //as unsigned numbers
+             image->pixels);               //The actual pixel data
+   return textureId; //Returns the id of the texture
+}
+
+GLuint _textureId; //The id of the texture
+
+void handleResize(int w, int h) {
+   glViewport(0, 0, w, h);
+   glMatrixMode(GL_PROJECTION);
+   glLoadIdentity();
+   gluPerspective(45.0, (float)w / (float)h, 1.0, 200.0);
+}
+
 /* Initialize OpenGL Graphics */
 void initGL() {
+
 	glClearColor(0.0f, 0.0f, 0.0f, 10.0f); // Set background color to black and opaque
-   	glClearDepth(10.0f);                   // Set background depth to farthest
-   	glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
-   	glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
-   	glShadeModel(GL_SMOOTH);   // Enable smooth shading
-   	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
+	glClearDepth(10.0f);                   // Set background depth to farthest
+	glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
+	glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
+	glShadeModel(GL_SMOOTH);   // Enable smooth shading
+
+   // Load image
+   Image* image = loadBMP("vtr.bmp");
+   _textureId = loadTexture(image);
+   delete image;
+
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
 }
 
 /* Drawing building without bottom from vector of point */
 void drawBuilding(vector<Point> points) {
 	int x1, z1, x2, z2, i = 0;
+
+   
 	glBegin(GL_QUADS); 
 	for (i = 0; i < points.size(); i++) {
 		int x1 = points[i].getX();
@@ -132,7 +180,22 @@ void display() {
    	// Render a color-cube consisting of 6 quads with different colors
    	glLoadIdentity();
     // Reset the model-view matrix
- 
+
+
+      // GLuint ImageTex = LoadTexture("vtr.bmp");
+      // glEnable(GL_TEXTURE_2D);
+      // glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,GL_REPLACE);
+      // glBindTexture(GL_TEXTURE_2D, ImageTex);
+
+    //   glEnable(GL_TEXTURE_2D);
+    //   glBindTexture(GL_TEXTURE_2D, _textureId);
+      
+    //   //Bottom
+    //   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    //   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    //   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    //   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
    	glBegin(GL_QUADS);                // Begin drawing the color cube with 6 quads
       	// Top face (y = 10.0f)
       	// Define vertices in counter-clockwise (CCW) order with normal pointing out
@@ -141,7 +204,8 @@ void display() {
       	glVertex3f(-175.0f, 10.0f, -175.0f);
       	glVertex3f(-175.0f, 10.0f,  175.0f);
       	glVertex3f( 175.0f, 10.0f,  175.0f);
- 	
+ 	       glDisable(GL_TEXTURE_2D);
+glBegin(GL_QUADS);
       	// Bottom face (y = -10.0f)
       	glColor3f(10.0f, 0.5f, 0.0f);     // Orange
       	glVertex3f( 175.0f, -10.0f,  175.0f);
@@ -177,59 +241,40 @@ void display() {
       	glVertex3f(175.0f, -10.0f,  175.0f);
       	glVertex3f(175.0f, -10.0f, -175.0f);
    	glEnd();  // End of drawing color-cube
-   
-   	// Render a color-cube consisting of 6 quads with different colors
-   	glLoadIdentity();
+      // Render a color-cube consisting of 6 quads with different colors
+      
+
+      // glEnable(GL_TEXTURE_2D);
+      // glBindTexture(GL_TEXTURE_2D, _textureId);
+      
+      // //Bottom
+      // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+      // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      // //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+      // //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+      // glColor3f(1.0f, 0.2f, 0.2f);
+      // glBegin(GL_QUADS);
+      
+      //    glNormal3f(0.0, 1.0f, 0.0f);
+      //    glTexCoord2f(0.0f, 0.0f);
+      //    glVertex3f(-2.5f, -2.5f, 2.5f);
+      //    glTexCoord2f(1.0f, 0.0f);
+      //    glVertex3f(2.5f, -2.5f, 2.5f);
+      //    glTexCoord2f(1.0f, 1.0f);
+      //    glVertex3f(2.5f, -2.5f, -2.5f);
+      //    glTexCoord2f(0.0f, 1.0f);
+      //    glVertex3f(-2.5f, -2.5f, -2.5f);
+         
+      // glEnd();
+      
+      glDisable(GL_TEXTURE_2D);
+   	
+      glLoadIdentity();
         // Reset the model-view matrix
  	
    	for (int i = 0; i < listBuilding.size(); i++) {
     	drawBuilding(listBuilding[i]);
    	}
-   /*glBegin(GL_QUADS);                // Begin drawing the color cube with 6 quads
-      // Top face (y = 10.0f)
-      //Define vertices in counter-clockwise (CCW) order with normal pointing out
-      glColor3f(0.0f, 10.0f, 0.0f);     // Green
-      glVertex3f(-144.0f, 20.0f, -19.0f);
-      glVertex3f(-118.0f, 20.0f, -19.0f);
-      glVertex3f(-118.0f, 20.0f, -4.0f);
-      glVertex3f(-144.0f, 20.0f, -4.0f);
- 
-      // Bottom face (y = -10.0f)
-      glColor3f(10.0f, 0.5f, 0.0f);     // Orange
-      glVertex3f(-144.0f, 10.0f, -19.0f);
-      glVertex3f(-118.0f, 10.0f, -19.0f);
-      glVertex3f(-118.0f, 10.0f, -4.0f);
-      glVertex3f(-144.0f, 10.0f, -4.0f);
- 
-      //Front face  (z = 10.0f)
-      glColor3f(10.0f, 0.0f, 0.0f);     // Red
-	  glVertex3f(-144.0f, 20.0f, -4.0f);
-      glVertex3f(-118.0f, 20.0f, -4.0f);
-      glVertex3f(-118.0f, 10.0f,  -4.0f);
-      glVertex3f(-144.0f, 10.0f,  -4.0f);
- 
-      // Back face (z = -10.0f)
-      glColor3f(175.0f, 10.0f, 0.0f);     // Yellow
-	  glVertex3f(-144.0f, 10.0f, -19.0f);
-      glVertex3f(-118.0f, 10.0f, -19.0f);
-      glVertex3f(-118.0f, 20.0f,  -19.0f);
-      glVertex3f(-144.0f, 20.0f,  -19.0f);
- 
-      // Left face (x = -10.0f)
-      glColor3f(0.0f, 0.0f, 10.0f);     // Blue
-	  glVertex3f(-118.0f, 20.0f, -19.0f);
-      glVertex3f(-118.0f, 20.0f, -4.0f);
-      glVertex3f(-118.0f, 10.0f,  -4.0f);
-      glVertex3f(-118.0f, 10.0f,  -19.0f);
- 
-      // Right face (x = 10.0f)
-      glColor3f(175.0f, 0.0f, 10.0f);     // Magenta
-	  glVertex3f(-144.0f, 20.0f, -19.0f);
-      glVertex3f(-144.0f, 20.0f, -4.0f);
-      glVertex3f(-144.0f, 10.0f,  -4.0f);
-      glVertex3f(-144.0f, 10.0f,  -19.0f);
-   glEnd();  // End of drawing color-cube
-    */
    	glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
 }
  
@@ -259,6 +304,7 @@ int main(int argc, char** argv) {
    	glutCreateWindow(title);          // Create window with the given title
    	glutDisplayFunc(display);       // Register callback handler for window re-paint event
    	glutReshapeFunc(reshape);       // Register callback handler for window re-size event
+      glutReshapeFunc(handleResize); 
    	initGL();                       // Our own OpenGL initialization
    	glutMainLoop();                 // Enter the infinite event-processing loop
    	return 0;
