@@ -62,22 +62,7 @@ GLuint LoadTexture( const char *filename )
    return texture;
 }
  
-GLuint loadTexture(Image* image) {
-   GLuint textureId;
-   glGenTextures(1, &textureId); //Make room for our texture
-   glBindTexture(GL_TEXTURE_2D, textureId); //Tell OpenGL which texture to edit
-   //Map the image to the texture
-   glTexImage2D(GL_TEXTURE_2D,                //Always GL_TEXTURE_2D
-             0,                            //0 for now
-             GL_RGB,                       //Format OpenGL uses for image
-             image->width, image->height,  //Width and height
-             0,                            //The border of the image
-             GL_RGB, //GL_RGB, because pixels are stored in RGB format
-             GL_UNSIGNED_BYTE, //GL_UNSIGNED_BYTE, because pixels are stored
-                               //as unsigned numbers
-             image->pixels);               //The actual pixel data
-   return textureId; //Returns the id of the texture
-}
+
 
 GLuint _textureId; //The id of the texture
 
@@ -96,11 +81,6 @@ void initGL() {
 	glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
 	glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
 	glShadeModel(GL_SMOOTH);   // Enable smooth shading
-
-   // Load image
-   Image* image = loadBMP("vtr.bmp");
-   _textureId = loadTexture(image);
-   delete image;
 
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
 }
@@ -152,7 +132,21 @@ void drawBuilding(vector<Point> points) {
    glEnd();
    
 }
- 
+
+float zoom = 1.0;
+float d = 0, p = 0;
+float geser = 0;
+
+void computePos(float d) {
+	zoom += d;
+	cout << d << endl;
+}
+
+void computeGeser(float p) {
+	geser += p;
+	cout << p << endl;
+}
+
 /* Handler for window-repaint event. Called back when the window first appears and
    whenever the window needs to be re-painted. */
 void display() {
@@ -161,16 +155,22 @@ void display() {
    	listBuilding = parse.getPoints();
 	cout << listBuilding.size() << endl;
    	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
-   
-   	glFrustum(-250.0, 350.0, -50.0, 450.0, 240.0, 600.0);         
-   	glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix
+
+	glMatrixMode(GL_PROJECTION);
+   	glLoadIdentity();
+	computePos(d);
+	computeGeser(p);
+	glFrustum(-250.0/zoom, 250.0/zoom, -250.0/zoom, 250.0/zoom, 10.0, 200.0);
+	gluLookAt(0.0+geser, 100.0, 0.0, 0.0-geser, 0.0, -200.0, 0.0, 1.0, 0.0);       
+   	
+	glMatrixMode(GL_MODELVIEW); // To operate on model-view matrix
 	
    	// Render a color-cube consisting of 6 quads with different colors
    	glLoadIdentity();
     // Reset the model-view matrix
 
 
-      GLuint ImageTex = LoadTexture("vtr.bmp");
+      //GLuint ImageTex = LoadTexture("vtr.bmp");
       // glEnable(GL_TEXTURE_2D);
       // glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,GL_REPLACE);
       // glBindTexture(GL_TEXTURE_2D, ImageTex);
@@ -184,7 +184,7 @@ void display() {
     //   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     //   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-   	glBegin(GL_QUADS);                // Begin drawing the color cube with 6 quads
+   	/*glBegin(GL_QUADS);                // Begin drawing the color cube with 6 quads
       	// Top face (y = 10.0f)
       	// Define vertices in counter-clockwise (CCW) order with normal pointing out
       	glColor3f(0.0f, 10.0f, 0.0f);     // Green
@@ -228,16 +228,16 @@ glBegin(GL_QUADS);
       	glVertex3f(175.0f,  10.0f,  175.0f);
       	glVertex3f(175.0f, -10.0f,  175.0f);
       	glVertex3f(175.0f, -10.0f, -175.0f);
-   	glEnd();  // End of drawing color-cube
+   	glEnd();  // End of drawing color-cube*/
 
          
-      Image* image = loadBMP("vtr.bmp");
+      /*Image* image = loadBMP("vtr.bmp");
       _textureId = loadTexture(image);
       delete image;
       cout<<_textureId<<" AAAA"<<endl;
       glEnable(GL_TEXTURE_2D);
-      glBindTexture(GL_TEXTURE_2D, _textureId);
-      
+      glBindTexture(GL_TEXTURE_2D, _textureId);*/
+      /*
       //Bottom
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -255,7 +255,7 @@ glBegin(GL_QUADS);
          
       glEnd();
 
-   
+   */
       
       glDisable(GL_TEXTURE_2D);
    	
@@ -284,7 +284,30 @@ void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integ
    	// Enable perspective projection with fovy, aspect, zNear and zFar
    	gluPerspective(45.0f, aspect, 0.1f, 100.0f);
 }
- 
+
+void processNormalKeys(unsigned char key, int xx, int yy) {
+	if (key == 27)
+		exit(0);
+}
+
+void pressKey(int key, int, int) {
+	switch (key) {
+		case GLUT_KEY_UP : d = 0.01; break;
+		case GLUT_KEY_DOWN : d = -0.01; break;
+		case GLUT_KEY_RIGHT : p = 0.1; break;
+		case GLUT_KEY_LEFT : p = -0.1; break;
+	}
+}
+
+void releaseKey(int key, int, int) { 	
+    switch (key) {
+         case GLUT_KEY_UP :
+         case GLUT_KEY_DOWN : d = 0; break;
+		 case GLUT_KEY_RIGHT : 
+		 case GLUT_KEY_LEFT : p = 0; break;
+    }
+} 
+
 /* Main function: GLUT runs as a console application starting at main() */
 int main(int argc, char** argv) {
    	glutInit(&argc, argv);            // Initialize GLUT
@@ -292,9 +315,16 @@ int main(int argc, char** argv) {
   	glutInitWindowSize(640, 480);   // Set the window's initial width & height
    	glutInitWindowPosition(50, 50); // Position the window's initial top-left corner
    	glutCreateWindow(title);          // Create window with the given title
+   	
    	glutDisplayFunc(display);       // Register callback handler for window re-paint event
    	glutReshapeFunc(reshape);       // Register callback handler for window re-size event
-      glutReshapeFunc(handleResize); 
+    glutReshapeFunc(handleResize);
+    glutIdleFunc(display);
+    
+	glutKeyboardFunc(processNormalKeys);
+   	glutSpecialFunc(pressKey);
+   	glutSpecialUpFunc(releaseKey);
+    
    	initGL();                       // Our own OpenGL initialization
    	glutMainLoop();                 // Enter the infinite event-processing loop
    	return 0;
