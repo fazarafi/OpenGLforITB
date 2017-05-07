@@ -79,7 +79,7 @@ GLuint loadTexture(Image* image) {
    return textureId; //Returns the id of the texture
 }
 
-GLuint _textureId; //The id of the texture
+GLuint _textureId[5]; //The id of the texture
 
 void handleResize(int w, int h) {
    glViewport(0, 0, w, h);
@@ -103,45 +103,65 @@ void initGL() {
 
 /* Drawing building without bottom from vector of point */
 void drawBuilding(vector<Point> points) {
-	int x1, z1, x2, z2, i = 0;
-   Image* image = loadBMP("vtr.bmp");
-   _textureId = loadTexture(image);
+   int x1, z1, x2, z2, i = 0;
+   
+   // Loading images into textures
+   Image* image = loadBMP("1.bmp3");
+   _textureId[0] = loadTexture(image);
    delete image;
-   glEnable(GL_TEXTURE_2D);
-   glBindTexture(GL_TEXTURE_2D, _textureId);
-   
-   //Bottom
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-   glColor3f(1.0f, 1.0f, 1.0f);
-   
-	glBegin(GL_QUADS); 
-	for (i = 0; i < points.size(); i++) {
-		int x1 = points[i].getX();
-    	int z1 = points[i].getY();
-    	if (i == points.size() - 1) {
-			x2 = points[0].getX();
-		 	z2 = points[0].getY();  
-      	}
-      	else {
-      		x2 = points[i+1].getX();
-      	 	z2 = points[i+1].getY();
-      	}
-      
-  
 
-      	// if ((i + 4)/ 4 == 0) {
-      	// 	glColor3f(10.0f, 0.0f, 0.0f);     // Red
-      	// }
-      	// else if ((i + 4)/ 5 == 0) {
-      	// 	glColor3f(175.0f, 10.0f, 0.0f);     // Yellow
-      	// }
-      	// else if ((i + 4)/ 5 == 0) {
-      	// 	glColor3f(0.0f, 0.0f, 10.0f);     // Blue
-      	// }
-      	// else { // (div (i + 1, ) == 0
-      	// 	glColor3f(175.0f, 0.0f, 10.0f);     // Magenta
-      	// }
+   Image* image1 = loadBMP("2.bmp3");
+   _textureId[1] = loadTexture(image1);
+   delete image1;
+
+   Image* image2 = loadBMP("1.bmp3");
+   _textureId[2] = loadTexture(image2);
+   delete image2;
+
+   Image* image3 = loadBMP("4.bmp3");
+   _textureId[3] = loadTexture(image3);
+   delete image3;
+
+   Image* image4 = loadBMP("5.bmp3");
+   _textureId[4] = loadTexture(image4);
+   delete image4;
+   
+
+
+  
+   
+   
+   for (i = 0; i < points.size(); i++) {
+
+      int x1 = points[i].getX();
+      int z1 = points[i].getY();
+      if (i == points.size() - 1) {
+         x2 = points[0].getX();
+         z2 = points[0].getY();  
+         }
+         else {
+            x2 = points[i+1].getX();
+            z2 = points[i+1].getY();
+         }
+         
+      glEnable(GL_TEXTURE_2D);
+      glBindTexture(GL_TEXTURE_2D, _textureId[i%5]);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+       glColor3f(1.0f, 1.0f, 1.0f);
+       glBegin(GL_QUADS); 
+         // if ((i + 4)/ 4 == 0) {
+         //    glColor3f(10.0f, 0.0f, 0.0f);     // Red
+         // }
+         // else if ((i + 4)/ 5 == 0) {
+         //    glColor3f(175.0f, 10.0f, 0.0f);     // Yellow
+         // }
+         // else if ((i + 4)/ 5 == 0) {
+         //    glColor3f(0.0f, 0.0f, 10.0f);     // Blue
+         // }
+         // else { // (div (i + 1, ) == 0
+         //    glColor3f(175.0f, 0.0f, 10.0f);     // Magenta
+         // }
       // glTexCoord2f(0.0, 0.0); glVertex3f(-50.0, -50.0, -10.0);
 
       // glTexCoord2f(0.0, 1.0); glVertex3f(-50.0, 50.0, -10.0);
@@ -150,20 +170,21 @@ void drawBuilding(vector<Point> points) {
 
       // glTexCoord2f(1.0, 0.0); glVertex3f(50.0, -50.0, -10.0);
 
-		
+      
       glTexCoord2f(1.0, 1.0); glVertex3f((float)x1-175, 20.0f, (float)(z1*(-175)/360));
-   	glTexCoord2f(0.0, 1.0); glVertex3f((float)x2-175, 20.0f, (float)(z2*(-175)/360));
-   	glTexCoord2f(0.0, 0.0); glVertex3f((float)x2-175, 10.0f,  (float)(z2*(-175)/360));
-   	glTexCoord2f(1.0, 0.0); glVertex3f((float)x1-175, 10.0f,  (float)(z1*(-175)/360));
+      glTexCoord2f(0.0, 1.0); glVertex3f((float)x2-175, 20.0f, (float)(z2*(-175)/360));
+      glTexCoord2f(0.0, 0.0); glVertex3f((float)x2-175, 10.0f,  (float)(z2*(-175)/360));
+      glTexCoord2f(1.0, 0.0); glVertex3f((float)x1-175, 10.0f,  (float)(z1*(-175)/360));
+      glEnd();
+      glDisable(GL_TEXTURE_2D);
 
    }
-   glEnd();
-   glDisable(GL_TEXTURE_2D);
+   
 
    glBegin(GL_POLYGON);
-   glColor3f(10.0f, 0.5f, 0.0f);     // Orange 
+   glColor3f(1.0f, 1.0f, 1.0f);     // Orange 
    for (i = 0; i < points.size(); i++) {
-   	  glVertex3f((float)points[i].getX()-175, 20.0f, (float)(points[i].getY()*(-175)/360));
+        glVertex3f((float)points[i].getX()-175, 20.0f, (float)(points[i].getY()*(-175)/360));
    }
    glEnd();
    
