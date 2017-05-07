@@ -52,8 +52,7 @@ void drawBuilding(vector<Point> points) {
       	else { // (div (i + 1, ) == 0
       		glColor3f(175.0f, 0.0f, 10.0f);     // Magenta
       	}
-		cout << "( " << x1-175 << "," << z1-175 << " )" << " ( " << x2-175 << "," << z2-175 << " )" << endl; 
-      	glVertex3f((float)x1-175, 20.0f, (float)(z1*(-175)/360));
+		glVertex3f((float)x1-175, 20.0f, (float)(z1*(-175)/360));
       	glVertex3f((float)x2-175, 20.0f, (float)(z2*(-175)/360));
       	glVertex3f((float)x2-175, 10.0f,  (float)(z2*(-175)/360));
       	glVertex3f((float)x1-175, 10.0f,  (float)(z1*(-175)/360));
@@ -63,7 +62,7 @@ void drawBuilding(vector<Point> points) {
    glBegin(GL_POLYGON);
    glColor3f(10.0f, 0.5f, 0.0f);     // Orange 
    for (i = 0; i < points.size(); i++) {
-   	  glVertex3f((float)points[i].getX()-175, 20.0f, (float)points[i].getY()-175);
+   	  glVertex3f((float)points[i].getX()-175, 20.0f, (float)(points[i].getY()*(-175)/360));
    }
    glEnd();
    
