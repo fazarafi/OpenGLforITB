@@ -108,7 +108,16 @@ void initGL() {
 /* Drawing building without bottom from vector of point */
 void drawBuilding(vector<Point> points) {
 	int x1, z1, x2, z2, i = 0;
-
+   Image* image = loadBMP("vtr.bmp");
+   _textureId = loadTexture(image);
+   delete image;
+   glEnable(GL_TEXTURE_2D);
+   glBindTexture(GL_TEXTURE_2D, _textureId);
+   
+   //Bottom
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+   glColor3f(1.0f, 1.0f, 1.0f);
    
 	glBegin(GL_QUADS); 
 	for (i = 0; i < points.size(); i++) {
@@ -125,22 +134,30 @@ void drawBuilding(vector<Point> points) {
       
   
 
-      	if ((i + 4)/ 4 == 0) {
-      		glColor3f(10.0f, 0.0f, 0.0f);     // Red
-      	}
-      	else if ((i + 4)/ 5 == 0) {
-      		glColor3f(175.0f, 10.0f, 0.0f);     // Yellow
-      	}
-      	else if ((i + 4)/ 5 == 0) {
-      		glColor3f(0.0f, 0.0f, 10.0f);     // Blue
-      	}
-      	else { // (div (i + 1, ) == 0
-      		glColor3f(175.0f, 0.0f, 10.0f);     // Magenta
-      	}
-		glVertex3f((float)x1-175, 20.0f, (float)(z1*(-175)/360));
-      	glVertex3f((float)x2-175, 20.0f, (float)(z2*(-175)/360));
-      	glVertex3f((float)x2-175, 10.0f,  (float)(z2*(-175)/360));
-      	glVertex3f((float)x1-175, 10.0f,  (float)(z1*(-175)/360));
+      	// if ((i + 4)/ 4 == 0) {
+      	// 	glColor3f(10.0f, 0.0f, 0.0f);     // Red
+      	// }
+      	// else if ((i + 4)/ 5 == 0) {
+      	// 	glColor3f(175.0f, 10.0f, 0.0f);     // Yellow
+      	// }
+      	// else if ((i + 4)/ 5 == 0) {
+      	// 	glColor3f(0.0f, 0.0f, 10.0f);     // Blue
+      	// }
+      	// else { // (div (i + 1, ) == 0
+      	// 	glColor3f(175.0f, 0.0f, 10.0f);     // Magenta
+      	// }
+      // glTexCoord2f(0.0, 0.0); glVertex3f(-50.0, -50.0, -10.0);
+
+      // glTexCoord2f(0.0, 1.0); glVertex3f(-50.0, 50.0, -10.0);
+
+      // glTexCoord2f(1.0, 1.0); glVertex3f(50.0, 50.0, -10.0);
+
+      // glTexCoord2f(1.0, 0.0); glVertex3f(50.0, -50.0, -10.0);
+
+		glTexCoord2f(0.0, 0.0); glVertex3f((float)x1-175, 20.0f, (float)(z1*(-175)/360));
+   	glTexCoord2f(0.0, 1.0); glVertex3f((float)x2-175, 20.0f, (float)(z2*(-175)/360));
+   	glTexCoord2f(1.0, 1.0); glVertex3f((float)x2-175, 10.0f,  (float)(z2*(-175)/360));
+   	glTexCoord2f(1.0, 0.0); glVertex3f((float)x1-175, 10.0f,  (float)(z1*(-175)/360));
    }
    glEnd();
    
@@ -171,18 +188,7 @@ void display() {
 
 
       GLuint ImageTex = LoadTexture("vtr.bmp");
-      // glEnable(GL_TEXTURE_2D);
-      // glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,GL_REPLACE);
-      // glBindTexture(GL_TEXTURE_2D, ImageTex);
-
-    //   glEnable(GL_TEXTURE_2D);
-    //   glBindTexture(GL_TEXTURE_2D, _textureId);
       
-    //   //Bottom
-    //   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    //   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    //   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    //   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
    	glBegin(GL_QUADS);                // Begin drawing the color cube with 6 quads
       	// Top face (y = 10.0f)
@@ -230,33 +236,6 @@ glBegin(GL_QUADS);
       	glVertex3f(175.0f, -10.0f, -175.0f);
    	glEnd();  // End of drawing color-cube
 
-         
-      Image* image = loadBMP("vtr.bmp");
-      _textureId = loadTexture(image);
-      delete image;
-      cout<<_textureId<<" AAAA"<<endl;
-      glEnable(GL_TEXTURE_2D);
-      glBindTexture(GL_TEXTURE_2D, _textureId);
-      
-      //Bottom
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-      glColor3f(1.0f, 1.0f, 1.0f);
-      glBegin(GL_QUADS);
-         
-         // glNormal3f(0.0, 1.0f, 0.0f);
-         glTexCoord2f(0.0, 0.0); glVertex3f(-50.0, -50.0, -10.0);
-
-      glTexCoord2f(0.0, 1.0); glVertex3f(-50.0, 50.0, -10.0);
-
-      glTexCoord2f(1.0, 1.0); glVertex3f(50.0, 50.0, -10.0);
-
-      glTexCoord2f(1.0, 0.0); glVertex3f(50.0, -50.0, -10.0);
-         
-      glEnd();
-
-   
-      
       glDisable(GL_TEXTURE_2D);
    	
       glLoadIdentity();
