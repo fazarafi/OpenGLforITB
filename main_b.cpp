@@ -7,6 +7,9 @@
 #include <iostream>
 #include <windows.h>
 #include "imageloader.h"
+//#include "shader.frag" // Fragment shader for OpenGL 2.x
+//#include "shader.vert" // Vertex shader for OpenGL 2.x
+
 
 /* Global variables */
 char title[] = "3D Shapes";
@@ -99,6 +102,55 @@ void initGL() {
 
  
    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
+}
+
+
+void initShader()
+{
+	GLuint vertexShaderID, fragmentShaderID;
+	
+	//vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
+	//fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+	
+    // Initialise the shaders
+    char* p_vertex_shader(0);
+    char* p_fragment_shader(0);
+
+    int z_lib_return_code_vertex(0);
+    int z_lib_return_code_fragment(0);
+
+    const char* vertex_shader;
+    const char* fragment_shader;
+
+    // L-buffer
+    //z_lib_return_code_vertex   = inflate(shader_vert, sizeof(shader_vert),   &p_vertex_shader);
+    //z_lib_return_code_fragment = inflate(fragment_frag, sizeof(fragment_frag), &p_fragment_shader);
+
+    vertex_shader   = p_vertex_shader;
+    fragment_shader = p_fragment_shader;
+    delete [] p_vertex_shader;     p_vertex_shader = 0;
+    delete [] p_fragment_shader; p_fragment_shader = 0;
+ 
+    const char* adapter[1];
+    
+	adapter[0] = vertex_shader;
+    //glShaderSource(vertexShaderID, 1, adapter, 0);
+    adapter[0] = fragment_shader;
+    //glShaderSource(fragmentShaderID, 1, adapter, 0);
+    
+    //glCompileShader(vertexShaderID);
+    //glCompileShader(fragmentShaderID);
+    
+    //GLuint programID = glCreateProgram();
+    //glAttachShader(programID, vertexShaderID);
+    //glAttachShader(programID, fragmentShaderID);
+	
+	//glLinkProgram(programID);
+	
+	//glUseProgram(programID);    
+    //g_display_shader.setLabels("display.vert", "display.frag");
+    //g_display_shader.loadSource(vertex_shader, fragment_shader);
+    //checkOpenGLErrorStatus(__FILE__, __FUNCTION__, __LINE__);
 }
 
 /* Drawing building without bottom from vector of point */
@@ -295,6 +347,7 @@ int main(int argc, char** argv) {
       glutReshapeFunc(reshape);       // Register callback handler for window re-size event
       glutReshapeFunc(handleResize); 
       initGL();                       // Our own OpenGL initialization
-      glutMainLoop();                 // Enter the infinite event-processing loop
+      //initShader();
+	  glutMainLoop();                 // Enter the infinite event-processing loop
       return 0;
 }
